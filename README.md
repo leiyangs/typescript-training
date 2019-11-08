@@ -1,9 +1,9 @@
-### 初始化ts
+# 初始化ts
 
 - 安装 cnpm i typescript -g
 - tsc helloworld.ts
 
-### 生成配置文件
+## 生成配置文件
 
 - tsc --init  
 
@@ -14,4 +14,4 @@
 ### vscode 编译
 
 - Terminal->Run Task-> tsc:build 编译
-- Terminal->Run Task-> tsc:watch 编译并监听 tsc-w
+- Terminal->Run Task-> tsc:watch 编译并监听 tsc -w
