@@ -190,7 +190,7 @@ var c1 = new child1('11');
  * 常见的装饰器有类装饰器、属性装饰器、方法装饰器和参数装饰器
  * 装饰器的写法分为普通装饰器和装饰器工厂
  */
-//8.1.类装饰器
+//  8.1.类装饰器
 /**
  * 类装饰器在类声明之前声明，用来监视、修改或替换类定义
  */
@@ -236,4 +236,113 @@ var b;
     console.log(p.name);
     p.eat();
 })(b || (b = {}));
+var c;
+(function (c) {
+    function enhancer(target) {
+        return /** @class */ (function () {
+            function class_1() {
+                this.name = 'yang';
+            }
+            class_1.prototype.eat = function () {
+                console.log('吃饭');
+            };
+            return class_1;
+        }());
+    }
+    var Person = /** @class */ (function () {
+        function Person() {
+        }
+        Person = __decorate([
+            enhancer
+        ], Person);
+        return Person;
+    }());
+    var p = new Person();
+    console.log(p.name);
+    p.eat();
+})(c || (c = {}));
+//  8.2属性装饰器
+/**
+ * 属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数
+ * 属性装饰器用来装饰属性:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是属性的名称
+ * 方法装饰器用来装饰方法:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是方法的名称; 第三个参数是方法描述符
+ */
+var d;
+(function (d) {
+    function upperCase(target, propertyKey) {
+        var value = target[propertyKey];
+        var getter = function () {
+            return value;
+        };
+        // 用来替换的setter
+        var setter = function (newVal) {
+            value = newVal.toUpperCase();
+        };
+        // 替换属性，先删除原先的属性，再重新定义属性
+        if (delete target[propertyKey]) {
+            Object.defineProperty(target, propertyKey, {
+                get: getter,
+                set: setter,
+                enumerable: true,
+                configurable: true
+            });
+        }
+    }
+    function noEnumerable(target, property, descriptor) {
+        console.log('target.getName', target.getName);
+        console.log('target.getAge', target.getAge);
+        descriptor.enumerable = true;
+    }
+    function toNumber(target, methodName, descriptor) {
+        var oldMethod = descriptor.value;
+        descriptor.value = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            args = args.map(function (item) { return parseFloat(item); });
+            return oldMethod.apply(this, args);
+        };
+    }
+    var Person = /** @class */ (function () {
+        function Person() {
+            this.name = 'yang';
+        }
+        Person.prototype.getName = function () {
+            console.log(this.name);
+        };
+        Person.prototype.sum = function () {
+            var args = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                args[_i] = arguments[_i];
+            }
+            return args.reduce(function (accu, item) { return accu + item; }, 0);
+        };
+        Person.age = 10;
+        __decorate([
+            upperCase
+        ], Person.prototype, "name", void 0);
+        __decorate([
+            noEnumerable
+        ], Person.prototype, "getName", null);
+        __decorate([
+            toNumber
+        ], Person.prototype, "sum", null);
+        return Person;
+    }());
+    var p = new Person();
+    for (var attr in p) {
+        console.log('attr=' + attr);
+    }
+    p.name = 'yy';
+    p.getName();
+    console.log(p.sum('1', '2', '3'));
+})(d || (d = {}));
 module.exports = {};
+//  8.3参数装饰器 
+/**
+ * 会在运行时当作函数被调用，可以使用参数装饰器为类的原型增加一些元数据
+ * 第1个参数对于静态成员是类的构造函数，对于实例成员是类的原型对象
+ * 第2个参数的名称
+ * 第3个参数在函数列表中的索引
+ */
