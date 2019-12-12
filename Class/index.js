@@ -18,6 +18,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 /**
  * 类
  */
@@ -146,12 +149,16 @@ var Father = /** @class */ (function () {
     Father.prototype.setName = function (name) {
         this.name = name;
     };
+    Father.prototype.getMoney = function () {
+        console.log(this.money);
+    };
     return Father;
 }());
 var dad = new Father('hehe', 38, 100);
 dad.name;
 // dad.age;  // 无法访问
 // dad.money;  // 无法访问
+dad.getMoney();
 var Child = /** @class */ (function (_super) {
     __extends(Child, _super);
     function Child(name, age, money) {
@@ -163,6 +170,7 @@ var Child = /** @class */ (function (_super) {
     Child.prototype.getname = function () {
         console.log(this.name);
     };
+    Child.a = '1';
     return Child;
 }(Father));
 var child = new Child('杨', 10, 1000);
@@ -354,7 +362,96 @@ var d;
  * 第3个参数在函数列表中的索引
  */
 (function (d) {
-    function addAge(target, methodName) {
+    function addAge(target, methodName, paramsIndex) {
+        console.log(target);
+        console.log(methodName);
+        console.log(paramsIndex);
+        target.age = 10;
     }
+    var Person = /** @class */ (function () {
+        function Person() {
+        }
+        Person.prototype.login = function (username, password) {
+            console.log(this.age, username, password);
+        };
+        __decorate([
+            __param(1, addAge)
+        ], Person.prototype, "login", null);
+        return Person;
+    }());
+    var p = new Person();
+    p.login('zhufeng', '123456');
 })(d || (d = {}));
+// 9.抽象类 abstract 
+/**
+ *
+ * 抽象类一般是用来封装一些公用的，给子类用的方法、属性
+ * 抽象描述一种抽象的概念，无法被实例化，只能被继承
+ * 无法创建抽象类的实例
+ * 抽象方法不能在抽象类中实现，只能在抽象类的具体子类中实现，而且必须实现
+ *
+ *
+ */
+var Copy = /** @class */ (function () {
+    function Copy() {
+    }
+    return Copy;
+}());
+// let copyone = new Copy(); // 无法创建抽象的实例
+var Childcopy = /** @class */ (function (_super) {
+    __extends(Childcopy, _super);
+    function Childcopy() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Childcopy.prototype.text = function () {
+        console.log('复制');
+    };
+    return Childcopy;
+}(Copy));
+var copytwo = new Childcopy();
+copytwo.text();
+// 10.抽象类abstract vs 接口interface
+/**
+ * 不同类之间公有的属性或方法，可以抽象成一个接口（Interfaces）
+ * 而抽象类是供其他类继承的基类，抽象类不允许被实例化。抽象类中的抽象方法必须在子类中被实现
+ * 抽象类本质是一个无法被实例化的类，其中能够实现方法和初始化属性，而接口仅能够用于描述,既不提供方法的实现，也不为属性进行初始化
+ * 一个类可以继承一个类或抽象类，但可以实现（implements）多个接口
+ * 抽象类也可以实现接口
+ */
+// 10.1抽象类封装公共的属性和方法
+var Animal1 = /** @class */ (function () {
+    function Animal1() {
+    }
+    return Animal1;
+}());
+var Cat = /** @class */ (function (_super) {
+    __extends(Cat, _super);
+    function Cat() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Cat.prototype.speak = function () {
+        console.log('喵');
+    };
+    Cat.prototype.fly = function () {
+        console.log('我会飞');
+    };
+    Cat.prototype.eat = function () {
+        console.log('我能吃');
+    };
+    return Cat;
+}(Animal1));
+var cat = new Cat();
+cat.speak();
+cat.name = 'hh';
+var Dog = /** @class */ (function (_super) {
+    __extends(Dog, _super);
+    function Dog() {
+        return _super !== null && _super.apply(this, arguments) || this;
+    }
+    Dog.prototype.speak = function () {
+        console.log('旺');
+    };
+    return Dog;
+}(Animal));
 module.exports = {};
+// 10.2重写override 重载overload

@@ -45,15 +45,15 @@ console.log(women.name)
 
 // 3.参数属性
 class User1 {
- constructor(public myname: string) {
+  constructor(public myname: string) {
 
- }
- get name() {
-   return this.myname
- }
- set name(name) {
-   this.myname = name;
- }
+  }
+  get name() {
+    return this.myname
+  }
+  set name(name) {
+    this.myname = name;
+  }
 }
 let user = new User1('yang');
 console.log(user.name);
@@ -100,7 +100,7 @@ class People {
   getName(): string {
     return this.name
   }
-  setName(name: string):void {
+  setName(name: string): void {
     this.name = name;
   }
 }
@@ -129,11 +129,14 @@ class Father {
     this.age = age;
     this.money = money;
   }
-  getName(): string{
+  getName(): string {
     return this.name;
   }
-  setName(name: string): void{
+  setName(name: string): void {
     this.name = name;
+  }
+  getMoney() {
+    console.log(this.money)
   }
 }
 
@@ -141,9 +144,11 @@ let dad = new Father('hehe', 38, 100);
 dad.name;
 // dad.age;  // 无法访问
 // dad.money;  // 无法访问
+dad.getMoney();
 
 class Child extends Father {
-  constructor(name: string,age: number,money: number) {
+  static a: string = '1'
+  constructor(name: string, age: number, money: number) {
     super(name, age, money)
   }
   desc() {
@@ -153,7 +158,7 @@ class Child extends Father {
     console.log(this.name);
   }
 }
-let child = new Child('杨',10,1000);
+let child = new Child('杨', 10, 1000);
 console.log(child.name);
 child.getname();
 // console.log(child.age); // 编译报错
@@ -162,19 +167,19 @@ child.getname();
 
 // 7.静态属性 静态方法
 class Father1 {
-  static className='Father';
+  static className = 'Father';
   static getClassName() {
     return Father1.className;
   }
   public name: string;
-  constructor(name:string) { //构造函数
-    this.name=name;
+  constructor(name: string) { //构造函数
+    this.name = name;
   }
 }
 console.log(Father1.className);
 console.log(Father1.getClassName());
 class child1 extends Father1 {
-  constructor(name:string) {
+  constructor(name: string) {
     super(name)
   }
 }
@@ -188,61 +193,61 @@ let c1 = new child1('11')
  * 装饰器的写法分为普通装饰器和装饰器工厂
  */
 
- //  8.1.类装饰器
- /**
-  * 类装饰器在类声明之前声明，用来监视、修改或替换类定义
-  */
+//  8.1.类装饰器
+/**
+ * 类装饰器在类声明之前声明，用来监视、修改或替换类定义
+ */
 
-  namespace a {
-    interface Person {
-      name: string;
-      eat: any
-    }
-    function enhancer (target: any) {
-      target.prototype.name = 'yang';
-      target.prototype.eat = function () {
-        console.log('eat')
-      }
-    }
-    @enhancer
-    class Person {
-      constructor() {}
-    }
-    let p: Person = new Person();
-    console.log(p.name);
-    p.eat();
-  }
-
-  namespace b {
-    interface Person {
-      name: string;
-      eat: any
-    }
-    function enhancer(name: string) {
-      return function enhancer(target: any) {
-        target.prototype.name = name;
-        target.prototype.eat = function () {
-          console.log('eat');
-        }
-      }
-    }
-
-    @enhancer('yang')
-    class Person {
-      constructor() { }
-    }
-    let p: Person = new Person();
-    console.log(p.name);
-    p.eat();
- }
-
- namespace c {
+namespace a {
   interface Person {
     name: string;
     eat: any
   }
   function enhancer(target: any) {
-    return class{
+    target.prototype.name = 'yang';
+    target.prototype.eat = function () {
+      console.log('eat')
+    }
+  }
+  @enhancer
+  class Person {
+    constructor() { }
+  }
+  let p: Person = new Person();
+  console.log(p.name);
+  p.eat();
+}
+
+namespace b {
+  interface Person {
+    name: string;
+    eat: any
+  }
+  function enhancer(name: string) {
+    return function enhancer(target: any) {
+      target.prototype.name = name;
+      target.prototype.eat = function () {
+        console.log('eat');
+      }
+    }
+  }
+
+  @enhancer('yang')
+  class Person {
+    constructor() { }
+  }
+  let p: Person = new Person();
+  console.log(p.name);
+  p.eat();
+}
+
+namespace c {
+  interface Person {
+    name: string;
+    eat: any
+  }
+  function enhancer(target: any) {
+    return class {
       name: string = 'yang';
       eat() {
         console.log('吃饭')
@@ -251,86 +256,175 @@ let c1 = new child1('11')
   }
   @enhancer
   class Person {
-    constructor() {}
+    constructor() { }
   }
   let p: Person = new Person();
   console.log(p.name);
   p.eat();
- }
+}
 
- //  8.2属性装饰器
- /**
-  * 属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数
-  * 属性装饰器用来装饰属性:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是属性的名称
-  * 方法装饰器用来装饰方法:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是方法的名称; 第三个参数是方法描述符
-  */
+//  8.2属性装饰器
+/**
+ * 属性装饰器表达式会在运行时当作函数被调用，传入下列2个参数
+ * 属性装饰器用来装饰属性:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是属性的名称
+ * 方法装饰器用来装饰方法:第一个参数对于静态成员来说是类的构造函数，对于实例成员是类的原型对象; 第二个参数是方法的名称; 第三个参数是方法描述符
+ */
 
-  namespace d {
-    function upperCase(target: any, propertyKey: string) {
-      let value = target[propertyKey];
-      const getter = function () {
-        return value;
-      }
-      // 用来替换的setter
-      const setter = function (newVal: string) {
-        value = newVal.toUpperCase();
-      }
-      // 替换属性，先删除原先的属性，再重新定义属性
-      if(delete target[propertyKey]) {
-        Object.defineProperty(target, propertyKey, {
-          get: getter,
-          set: setter,
-          enumerable: true,
-          configurable: true
-        })
-      }
+namespace d {
+  function upperCase(target: any, propertyKey: string) {
+    let value = target[propertyKey];
+    const getter = function () {
+      return value;
     }
-    function noEnumerable(target: any, property: string, descriptor: PropertyDescriptor) {
-      console.log('target.getName', target.getName);
-      console.log('target.getAge', target.getAge);
-      descriptor.enumerable = true;
+    // 用来替换的setter
+    const setter = function (newVal: string) {
+      value = newVal.toUpperCase();
     }
-    function toNumber(target: any, methodName: string, descriptor: PropertyDescriptor) {
-      let oldMethod = descriptor.value;
-      descriptor.value = function(...args: any[]) {
-        args = args.map(item => parseFloat(item));
-        return oldMethod.apply(this, args);
-      }
-    }
-    class Person {
-      @upperCase
-      name: string = 'yang'
-      public static age: number = 10
-      @noEnumerable
-      getName() {
-        console.log(this.name)
-      }
-      @toNumber
-      sum(...args: any[]) {
-        return args.reduce((accu: number, item: number) => accu + item ,0);
-      }
-    }
-    let p: Person = new Person();
-    for(let attr in p) {
-      console.log('attr=' + attr)
-    }
-    p.name = 'yy';
-    p.getName();
-    console.log(p.sum('1', '2', '3'));
-  }
-  //  8.3参数装饰器 
-  /**
-   * 会在运行时当作函数被调用，可以使用参数装饰器为类的原型增加一些元数据
-   * 第1个参数对于静态成员是类的构造函数，对于实例成员是类的原型对象
-   * 第2个参数的名称
-   * 第3个参数在函数列表中的索引
-   */
-  namespace d {
-    interface Person {
-      age: number;
-    }
-    function addAge(target: any, methodName: string,) {
-
+    // 替换属性，先删除原先的属性，再重新定义属性
+    if (delete target[propertyKey]) {
+      Object.defineProperty(target, propertyKey, {
+        get: getter,
+        set: setter,
+        enumerable: true,
+        configurable: true
+      })
     }
   }
-  
+  function noEnumerable(target: any, property: string, descriptor: PropertyDescriptor) {
+    console.log('target.getName', target.getName);
+    console.log('target.getAge', target.getAge);
+    descriptor.enumerable = true;
+  }
+  function toNumber(target: any, methodName: string, descriptor: PropertyDescriptor) {
+    let oldMethod = descriptor.value;
+    descriptor.value = function (...args: any[]) {
+      args = args.map(item => parseFloat(item));
+      return oldMethod.apply(this, args);
+    }
+  }
+  class Person {
+    @upperCase
+    name: string = 'yang'
+    public static age: number = 10
+    @noEnumerable
+    getName() {
+      console.log(this.name)
+    }
+    @toNumber
+    sum(...args: any[]) {
+      return args.reduce((accu: number, item: number) => accu + item, 0);
+    }
+  }
+  let p: Person = new Person();
+  for (let attr in p) {
+    console.log('attr=' + attr)
+  }
+  p.name = 'yy';
+  p.getName();
+  console.log(p.sum('1', '2', '3'));
+}
+//  8.3参数装饰器 
+/**
+ * 会在运行时当作函数被调用，可以使用参数装饰器为类的原型增加一些元数据
+ * 第1个参数对于静态成员是类的构造函数，对于实例成员是类的原型对象
+ * 第2个参数的名称
+ * 第3个参数在函数列表中的索引
+ */
+namespace d {
+  interface Person {
+    age: number;
+  }
+  function addAge(target: any, methodName: string, paramsIndex: number) {
+    console.log(target);
+    console.log(methodName);
+    console.log(paramsIndex);
+    target.age = 10;
+  }
+  class Person {
+    login(username: string, @addAge password: string) {
+      console.log(this.age, username, password);
+    }
+  }
+  let p = new Person();
+  p.login('zhufeng', '123456')
+}
+
+
+
+
+// 9.抽象类 abstract 
+/**
+ *
+ * 抽象类一般是用来封装一些公用的，给子类用的方法、属性
+ * 抽象描述一种抽象的概念，无法被实例化，只能被继承
+ * 无法创建抽象类的实例
+ * 抽象方法不能在抽象类中实现，只能在抽象类的具体子类中实现，而且必须实现
+ * 
+ *
+ */
+abstract class Copy {
+  name!: string;
+  // abstract text() {  // 方法“text”不能具有实现，因为它标记为抽象。
+  //   console.log(this.name)
+  // }
+  abstract text(): void;
+}
+// let copyone = new Copy(); // 无法创建抽象的实例
+
+class Childcopy extends Copy {
+  text() {
+    console.log('复制')
+  }
+}
+let copytwo = new Childcopy();
+copytwo.text();
+
+
+
+
+// 10.抽象类abstract vs 接口interface
+/**
+ * 不同类之间公有的属性或方法，可以抽象成一个接口（Interfaces）
+ * 而抽象类是供其他类继承的基类，抽象类不允许被实例化。抽象类中的抽象方法必须在子类中被实现
+ * 抽象类本质是一个无法被实例化的类，其中能够实现方法和初始化属性，而接口仅能够用于描述,既不提供方法的实现，也不为属性进行初始化
+ * 一个类可以继承一个类或抽象类，但可以实现（implements）多个接口
+ * 抽象类也可以实现接口
+ */
+
+// 10.1抽象类封装公共的属性和方法
+abstract class Animal1 {
+  name!: string;
+  abstract speak(): void;
+}
+
+// 接口里的方法都是抽象类,类可以实现多个接口
+interface Flying {
+  fly(): void;
+}
+interface Eating {
+  eat(): void;
+}
+
+class Cat extends Animal1 implements Flying, Eating{
+  speak() {
+    console.log('喵')
+  }
+  fly() {
+    console.log('我会飞')
+  }
+  eat() {
+    console.log('我能吃')
+  }
+}
+let cat = new Cat();
+cat.speak();
+cat.name = 'hh'
+
+class Dog extends Animal {
+  speak() {
+    console.log('旺')
+  }
+}
+
+// 10.2重写override 重载overload
+
