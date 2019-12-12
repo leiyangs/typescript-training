@@ -417,7 +417,7 @@ class Cat extends Animal1 implements Flying, Eating{
   }
 }
 let cat = new Cat();
-cat.speak();
+cat.speak(); 
 cat.name = 'hh'
 
 class Dog extends Animal {
@@ -427,4 +427,20 @@ class Dog extends Animal {
 }
 
 // 10.2重写override 重载overload
+/**
+ * 重写是指子类重写继承自父类中的方法
+ * 重载是指为同一个函数提供多个类型定义
+ */
+function double(val: number): number; // 函数的声明
+function double(val: string): string; // 函数的声明
+function double(val: any): any{ // 函数的实现，紧跟在声明后面
+  if(typeof val === "string") {
+    return `string->${val}`
+  }else if(typeof val === "number") {
+    return val + val;
+  }
+}
+console.log(double(1));
+console.log(double('a'));
+
 

@@ -453,5 +453,14 @@ var Dog = /** @class */ (function (_super) {
     };
     return Dog;
 }(Animal));
+function double(val) {
+    if (typeof val === "string") {
+        return "string->" + val;
+    }
+    else if (typeof val === "number") {
+        return val + val;
+    }
+}
+console.log(double(1));
+console.log(double('a'));
 module.exports = {};
-// 10.2重写override 重载overload
