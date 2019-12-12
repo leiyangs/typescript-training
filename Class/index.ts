@@ -72,10 +72,10 @@ console.log(user.name);
 class Animal {
   public readonly name: string
   constructor(name: string) {
-    this.name = name
+    this.name = name  // 这里可以修改，因为这里的值相当于初始化
   }
   changeName(name: string) {
-    // this.name = name // 编译会报错
+    // this.name = name // 编译会报错 name是只读属性,不能在外部赋值
   }
 }
 let dog = new Animal('欢欢');
@@ -119,7 +119,7 @@ let s1 = new Student('杨', 18, 1)
 console.log(s1);
 
 
-// 6.类里面的修饰符
+// 6.类里面的修饰符 (访问修饰符：public公开的 protected受保护的 private私有的)
 class Father {
   public name: string //类里面 子类 其它任何地方外边都可以访问
   protected age: number //类里面 子类 都可以访问,其它任何地方不能访问
@@ -137,16 +137,25 @@ class Father {
   }
 }
 
+let dad = new Father('hehe', 38, 100);
+dad.name;
+// dad.age;  // 无法访问
+// dad.money;  // 无法访问
+
 class Child extends Father {
   constructor(name: string,age: number,money: number) {
     super(name, age, money)
   }
   desc() {
-    // console.log(`${this.name} ${this.age} ${this.money}`);  // 编译报错
+    // console.log(`${this.name} ${this.age} ${this.money}`);  // 编译报错 name age可以访问 money不能访问
+  }
+  getname() {
+    console.log(this.name);
   }
 }
 let child = new Child('杨',10,1000);
 console.log(child.name);
+child.getname();
 // console.log(child.age); // 编译报错
 // console.log(child.money); // 编译报错
 
@@ -316,4 +325,12 @@ let c1 = new child1('11')
    * 第2个参数的名称
    * 第3个参数在函数列表中的索引
    */
+  namespace d {
+    interface Person {
+      age: number;
+    }
+    function addAge(target: any, methodName: string,) {
+
+    }
+  }
   

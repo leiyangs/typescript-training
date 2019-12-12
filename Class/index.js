@@ -91,10 +91,10 @@ console.log(user.name);
  */
 var Animal = /** @class */ (function () {
     function Animal(name) {
-        this.name = name;
+        this.name = name; // 这里可以修改，因为这里的值相当于初始化
     }
     Animal.prototype.changeName = function (name) {
-        // this.name = name // 编译会报错
+        // this.name = name // 编译会报错 name是只读属性,不能在外部赋值
     };
     return Animal;
 }());
@@ -133,7 +133,7 @@ var Student = /** @class */ (function (_super) {
 }(People));
 var s1 = new Student('杨', 18, 1);
 console.log(s1);
-// 6.类里面的修饰符
+// 6.类里面的修饰符 (访问修饰符：public公开的 protected受保护的 private私有的)
 var Father = /** @class */ (function () {
     function Father(name, age, money) {
         this.name = name;
@@ -148,18 +148,26 @@ var Father = /** @class */ (function () {
     };
     return Father;
 }());
+var dad = new Father('hehe', 38, 100);
+dad.name;
+// dad.age;  // 无法访问
+// dad.money;  // 无法访问
 var Child = /** @class */ (function (_super) {
     __extends(Child, _super);
     function Child(name, age, money) {
         return _super.call(this, name, age, money) || this;
     }
     Child.prototype.desc = function () {
-        // console.log(`${this.name} ${this.age} ${this.money}`);  // 编译报错
+        // console.log(`${this.name} ${this.age} ${this.money}`);  // 编译报错 name age可以访问 money不能访问
+    };
+    Child.prototype.getname = function () {
+        console.log(this.name);
     };
     return Child;
 }(Father));
 var child = new Child('杨', 10, 1000);
 console.log(child.name);
+child.getname();
 // console.log(child.age); // 编译报错
 // console.log(child.money); // 编译报错
 // 7.静态属性 静态方法
@@ -338,7 +346,6 @@ var d;
     p.getName();
     console.log(p.sum('1', '2', '3'));
 })(d || (d = {}));
-module.exports = {};
 //  8.3参数装饰器 
 /**
  * 会在运行时当作函数被调用，可以使用参数装饰器为类的原型增加一些元数据
@@ -346,3 +353,8 @@ module.exports = {};
  * 第2个参数的名称
  * 第3个参数在函数列表中的索引
  */
+(function (d) {
+    function addAge(target, methodName) {
+    }
+})(d || (d = {}));
+module.exports = {};
