@@ -110,8 +110,6 @@ function fun2(a: number): number {
 }
 sum = fun2;
 
-
-
 // 5.函数参数的协变
 /**
  * 目标如果能够兼容源就是可以的
@@ -121,13 +119,44 @@ sum = fun2;
 type LogFunc = (a: number | string) => void;
 let log: LogFunc;
 function log1(a: number | string | boolean) {
-  console.log(a)
+  console.log(a);
 }
 log = log1;
-
 
 // 6.泛型的兼容性
 /**
  * 泛型在判断兼容性的时候会先判断具体的类型,然后再进行兼容性判断
  */
 
+//接口内容为空没用到泛型的时候是可以的
+//1.接口内容为空没用到泛型的时候是可以的
+interface Empty<T> {}
+let x!: Empty<string>;
+let y!: Empty<number>;
+x = y;
+//2.接口内容不为空的时候不可以
+interface NoEmpty<T> {
+  data: T
+}
+let x1!: NoEmpty<string>;
+let y1!: NoEmpty<number>;
+// x1 = y1; //报错 不能将类型“NoEmpty<number>”分配给类型“NoEmpty<string>”
+
+
+// 6.枚举的兼容性
+/**
+ * 枚举类型与数字类型兼容，并且数字类型与枚举类型兼容
+ * 不同枚举类型之间是不兼容的
+ */
+
+//数字可以赋给枚举
+ enum Colors {Red, Yellow};
+ let c: Colors;
+ c = Colors.Red;
+ c = 1;
+//  c = "1"; // 不能将类型“"1"”分配给类型“Colors”
+
+//枚举值可以赋给数字
+let n: number;
+n = 1;
+n = Colors.Red;

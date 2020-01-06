@@ -17,7 +17,7 @@ function getAnimalName(animal) {
     return animal.name;
 }
 var p = {
-    name: 'yang',
+    name: "yang",
     age: 18,
     gender: 1
 };
@@ -31,11 +31,11 @@ getAnimalName(p);
 // 2. 基本类型的兼容性检查
 //基本数据类型也有兼容性判断
 var num;
-var str = 'yang';
+var str = "yang";
 num = str;
 //只要有toString()方法就可以赋给字符串变量 有toString方法说明符合num2要求
 var num2;
-var str2 = 'yang';
+var str2 = "yang";
 num2 = str2;
 // 3. 类的兼容性
 /**
@@ -94,4 +94,41 @@ var sum;
 function fun1(a, b) {
     return a + b;
 }
+sum = fun1;
+//  4.2 比较返回值
+function fun2(a) {
+    return a;
+}
+sum = fun2;
+var log;
+function log1(a) {
+    console.log(a);
+}
+log = log1;
+var x;
+var y;
+x = y;
+var x1;
+var y1;
+// x1 = y1; //报错 不能将类型“NoEmpty<number>”分配给类型“NoEmpty<string>”
+// 6.枚举的兼容性
+/**
+ * 枚举类型与数字类型兼容，并且数字类型与枚举类型兼容
+ * 不同枚举类型之间是不兼容的
+ */
+//数字可以赋给枚举
+var Colors;
+(function (Colors) {
+    Colors[Colors["Red"] = 0] = "Red";
+    Colors[Colors["Yellow"] = 1] = "Yellow";
+})(Colors || (Colors = {}));
+;
+var c;
+c = Colors.Red;
+c = 1;
+//  c = "1"; // 不能将类型“"1"”分配给类型“Colors”
+//枚举值可以赋给数字
+var n;
+n = 1;
+n = Colors.Red;
 module.exports = {};
