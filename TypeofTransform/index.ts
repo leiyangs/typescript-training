@@ -145,4 +145,163 @@ let b: Required<B> = { // 三项都为必填
 }
 
 // 6.3.Readonly 
+/**
+ * Readonly 通过为传入的属性每一项都加上 readonly 修饰符来实现。
+ */
+interface Person4 {
+  name: string,
+  age: number,
+  gender: "male" | "famale"
+}
+
+let p5: Readonly<Person4> = {
+  name: 'd',
+  age: 18,
+  gender: "male"
+}
+// p5.age = 11; //Cannot assign to 'age' because it is a read-only property.
+
+
+// 6.4.Pick
+/**
+ * Pick 能够帮助我们从传入的属性中摘取某一项返回
+ */
+
+interface Animal {
+  name: string
+  age: number
+}
+
+/**
+ * From T pick a set of properties K
+ * type Pick<T, K extends keyof T> = { [P in K]: T[P] };
+ */
+// 摘取 Animal 中的 name 属性
+type AnimalSub = Pick<Animal, "name">
+let a1: AnimalSub = {
+  name: "hehe"
+}
+
+
+// 6.5.映射类型修饰符的控制
+/**
+ * TypeScript中增加了对映射类型修饰符的控制
+ * 具体而言，一个 readonly 或 ? 修饰符在一个映射类型里可以用前缀 + 或-来表示这个修饰符应该被添加或移除
+ * TS 中部分内置工具类型就利用了这个特性（Partial、Required、Readonly...），这里我们可以参考 Partial、Required 的实现
+ */
+
+
+
+// 7.条件类型
+/**
+ * 在定义泛型的时候能够添加进逻辑分支，以后泛型更加灵活
+ */
+
+
+// 7.1.定义条件类型
+interface Fish {
+  name: string
+}
+interface Water {
+  name: string
+}
+interface Bird {
+  name: string
+}
+interface Sky {
+  name: string
+}
+type Codition<T> = T extends Fish ? Water : Sky;
+let codition: Codition<Fish> = { name: "鱼要水" };
+console.log(codition)
+
+
+// 7.2.条件类型的分发
+interface Fish1 {
+  fish: string
+}
+interface Water1 {
+  water: string
+}
+interface Bird1 {
+  bird: string
+}
+interface Sky1 {
+  sky: string
+}
+
+type Codition1<T> = T extends Fish1 ? Water1 : Sky1;
+let codition1: Codition1<Fish1> = { water: "水" };
+let codition2: Codition1<Bird1> = { sky: "天空" }
+
+
+// 7.3.内置条件类型
+/**
+ * TS 在内置了一些常用的条件类型，可以在 lib.es5.d.ts 中查看：
+ */
+
+
+// 7.3.1.Exclude 
+/**
+ * 从 T 可分配给的类型中排除 U
+ */
+
+type E = Exclude<string|number, string> // 这里排除了string
+let e: E = 10;
+
+
+// 7.3.2.Extract 
+/**
+ * 从 T 可分配的类型中提取 U
+ */
+type E1 = Extract<string|number, string> // 提取了string类型
+let e1: E1 = "10";
+
+
+// 7.3.3.NonNullable 
+/**
+ * 从 T 中排除 null 和 undefined
+ */
+
+type N = NonNullable<string|number|boolean|null|undefined>;
+let n: N = true;
+
+
+// 7.3.4.ReturnType 
+/**
+ * 获取函数类型的返回类型
+ */
+
+function getUserInfo() {
+  return { name: "aa", age: 10 }
+}
+// 通过 ReturnType 将 getUserInfo 的返回值类型赋给了 UserInfo
+type UserInfo = ReturnType<typeof getUserInfo>;
+const userA: UserInfo = {
+  name: "a",
+  age: 10
+}
+
+
+// 7.3.5.InstanceType
+/**
+ * 获取构造函数类型的实例类型
+ */
+class NewPerson {
+  name: string;
+  constructor(name: string) {
+    this.name = name;
+  }
+  getName() {
+    console.log(this.name)
+  }
+}
+type I = InstanceType<typeof NewPerson>
+let i: I = {
+  name: "1",
+  getName() {}
+}
+
+
+
 
