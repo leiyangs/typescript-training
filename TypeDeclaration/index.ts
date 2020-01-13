@@ -9,7 +9,7 @@ export = {};
 // 1.普通类型声明
 declare const $: (
   selector: string
-) => {
+) => { // 函数声明，不是剪头函数
   // 变量
   click(): void;
   width(length: number): void;
@@ -49,7 +49,7 @@ console.log(seasons);
   Seasons.Winter
 ]; */
 
-// 也可以同时使用declare 和 const
+// 也可以同时使用declare 和 const 常量枚举
 declare const enum Seasons1 {
   Spring,
   Summer,
@@ -57,7 +57,7 @@ declare const enum Seasons1 {
   Winter
 }
 
-let seasons1 = [Seasons.Spring, Seasons.Summer, Seasons.Autumn, Seasons.Winter];
+let seasons1 = [Seasons1.Spring, Seasons1.Summer, Seasons1.Autumn, Seasons1.Winter];
 
 // 3.namespace
 /**
@@ -86,3 +86,5 @@ $1.fn.extend({
  * 文件命名规范为*.d.ts
  * 观看类型声明文件有助于了解库的使用方式
  */
+
+// typeings/jquery.d.ts  // 在tsconfig文件中设置include

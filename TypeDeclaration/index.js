@@ -6,7 +6,7 @@ getName();
 new Animal();
 var seasons = [Seasons.Spring, Seasons.Summer, Seasons.Autumn, Seasons.Winter];
 console.log(seasons);
-var seasons1 = [Seasons.Spring, Seasons.Summer, Seasons.Autumn, Seasons.Winter];
+var seasons1 = [0 /* Spring */, 1 /* Summer */, 2 /* Autumn */, 3 /* Winter */];
 $1.ajax("/api/users", {});
 $1.fn.extend({
     log: function (message) {
@@ -21,3 +21,4 @@ module.exports = {};
  * 文件命名规范为*.d.ts
  * 观看类型声明文件有助于了解库的使用方式
  */
+// typeings/jquery.d.ts  // 在tsconfig文件中设置include
