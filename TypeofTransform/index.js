@@ -33,12 +33,13 @@ var p3 = {};
 var p4 = {};
 var a = {};
 var b = {
-    b1: '1',
+    // 三项都为必填
+    b1: "1",
     b2: 12,
     b3: true
 };
 var p5 = {
-    name: 'd',
+    name: "d",
     age: 18,
     gender: "male"
 };
@@ -52,7 +53,7 @@ var codition2 = { sky: "天空" };
 var e = 10;
 var e1 = "10";
 var n = true;
-// 7.3.4.ReturnType 
+// 7.3.4.ReturnType
 /**
  * 获取函数类型的返回类型
  */
@@ -80,4 +81,5 @@ var i = {
     name: "1",
     getName: function () { }
 };
+var i1 = new NewPerson("aa");
 module.exports = {};

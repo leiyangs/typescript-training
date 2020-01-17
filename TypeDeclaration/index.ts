@@ -9,7 +9,8 @@ export = {};
 // 1.普通类型声明
 declare const $: (
   selector: string
-) => { // 函数声明，不是剪头函数
+) => {
+  // 函数声明，不是剪头函数
   // 变量
   click(): void;
   width(length: number): void;
@@ -57,7 +58,12 @@ declare const enum Seasons1 {
   Winter
 }
 
-let seasons1 = [Seasons1.Spring, Seasons1.Summer, Seasons1.Autumn, Seasons1.Winter];
+let seasons1 = [
+  Seasons1.Spring,
+  Seasons1.Summer,
+  Seasons1.Autumn,
+  Seasons1.Winter
+];
 
 // 3.namespace
 /**
@@ -88,3 +94,40 @@ $1.fn.extend({
  */
 
 // typeings/jquery.d.ts  // 在tsconfig文件中设置include
+// 重点看src中的文件和types和typings的声明文件
+
+// 5.npm声明文件可能的位置
+/* node_modules/jquery/package.json
+"types":"types/xxx.d.ts"
+node_modules/jquery/index.d.ts
+node_modules/@types/jquery/index.d.ts */
+
+// 6.扩展全局变量的类型
+interface String {
+  // 1、扩展局部变量类型
+  double(): string;
+}
+declare global {
+  interface Window {
+    // 2、如何扩展全局变量window的类型  有export= {} 就代表声明的是局部的,要放到global内
+    myname: string;
+  }
+}
+String.prototype.double = function() {
+  return this + this;
+};
+console.log("hello".double());
+console.log(window.myname);
+
+// 7.合并声明 
+/* 同一名称的两个独立声明会被合并成一个单一声明
+合并后的声明拥有原先两个声明的特性
+类既可以作为类型使用，也可以作为值使用，接口只能作为类型使用 */
+
+
+// 使用命名空间扩展类
+declare function jQuery(selector: string): void;
+declare namespace jQuery {
+  let name: string
+}
+jQuery.name;

@@ -12,6 +12,5 @@ node_modules/jquery/package.json
 node_modules/jquery/index.d.ts
 node_modules/@types/jquery/index.d.ts */
 import * as jQuery from "jquery"
-jQuery.fn.extend
-
-
+let a: any = [];
+console.log(jQuery.isArray(a))
