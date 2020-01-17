@@ -124,10 +124,61 @@ console.log(window.myname);
 合并后的声明拥有原先两个声明的特性
 类既可以作为类型使用，也可以作为值使用，接口只能作为类型使用 */
 
+// 可以通过接口合并的特性给一个第三方为扩展类型声明
+// useJquery.ts 文件
+
 
 // 使用命名空间扩展类
-declare function jQuery(selector: string): void;
-declare namespace jQuery {
-  let name: string
+// 我们可以使用 namespace 来扩展类，用于表示内部类
+class Form {
+  username: Form.Item='';
+  password: Form.Item='';
 }
-jQuery.name;
+//Item为Form的内部类
+namespace Form {
+  export class Item {}
+}
+let item:Form.Item = new Form.Item();
+console.log(item);
+
+
+// 使用命名空间扩展函数
+// 我们也可以使用 namespace 来扩展函数
+function greeting(name: string): string {
+  return greeting.words+name;
+}
+
+namespace greeting {
+  export let words = "Hello,";
+}
+console.log(greeting('hehe'))
+
+// 使用命名空间扩展枚举类型
+enum Color {
+  red = 1,
+  yellow = 2,
+  blue = 3
+}
+
+namespace Color {
+  export const green=4;
+  export const purple=5;
+}
+console.log(Color.green)
+
+
+// 扩展Store
+import { createStore, Store } from 'redux';
+type StoreExt = Store & {
+    ext: string
+}
+let store: StoreExt = createStore(state => state);
+store.ext = 'hello';
+
+// 生成声明文件
+// 把TS编译成JS后丢失类型声明，我们可以在编译的时候自动生成一份JS文件
+{
+  "compilerOptions": {
+     "declaration": true, /* Generates corresponding '.d.ts' file.*/
+  }
+}
