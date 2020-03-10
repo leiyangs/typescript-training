@@ -121,9 +121,9 @@ console.log(s1);
 
 // 6.类里面的修饰符 (访问修饰符：public公开的 protected受保护的 private私有的)
 class Father {
-  public name: string //类里面 子类 其它任何地方外边都可以访问
-  protected age: number //类里面 子类 都可以访问,其它任何地方不能访问
-  private money: number //类里面可以访问， 子类和其它任何地方都不可以访问
+  public name: string //类里面 子类 其它任何地方外边都可以访问(new Father())
+  protected age: number //类里面 子类 都可以访问,其它任何地方不能访问(new Father())
+  private money: number //类里面可以访问，子类和其它任何地方都不可以访问(new Father())
   constructor(name: string, age: number, money: number) {
     this.name = name;
     this.age = age;
